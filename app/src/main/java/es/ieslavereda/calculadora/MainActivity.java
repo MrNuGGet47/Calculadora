@@ -1,78 +1,145 @@
 package es.ieslavereda.calculadora;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView display;
-    private Button plusButton;
+    private Button sumButton;
     private Button clear;
     private Button resolve;
     private Button restButton;
     private Button multButton;
     private Button divButton;
-    private Double operador;
-    private Operacion operacion;
+    private Button pointButton;
+    private CheckBox disabler;
+    private RadioGroup options;
+    private Double operator;
+    private Operacion operation;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         display = findViewById(R.id.display);
-        plusButton = findViewById(R.id.plusButton);
+        sumButton = findViewById(R.id.sumButton);
         clear = findViewById(R.id.clear);
         resolve = findViewById(R.id.resolve);
         restButton = findViewById(R.id.restButton);
         multButton = findViewById(R.id.multButton);
         divButton = findViewById(R.id.divButton);
+        pointButton = findViewById(R.id.pointButton);
+        disabler = findViewById(R.id.showOpt);
+        options = findViewById(R.id.disOptions);
 
-        plusButton.setOnClickListener( view->{
-            operador = Double.parseDouble(display.getText().toString());
+        if (savedInstanceState != null){
+            operation = (Operacion) savedInstanceState.getSerializable("operation");
+            operator = (Double) savedInstanceState.getSerializable("operator");
+            if((boolean) savedInstanceState.getSerializable("checked")){
+                   options.setVisibility(View.VISIBLE);
+            }else{
+                options.setVisibility(View.GONE);
+            }
+        }
+        else{
+            options.setVisibility(View.GONE);
+        }
+
+        pointButton.setOnClickListener( view->{
+            display.setText(display.getText().toString()+".");
+        });
+
+        sumButton.setOnClickListener(view->{
+            operator = Double.parseDouble(display.getText().toString());
             display.setText("0");
-            operacion = Operacion.SUMA;
+            operation = Operacion.SUMA;
         });
 
         restButton.setOnClickListener( view->{
-            operador = Double.parseDouble(display.getText().toString());
+            operator = Double.parseDouble(display.getText().toString());
             display.setText("0");
-            operacion = Operacion.RESTA;
+            operation = Operacion.RESTA;
         });
 
         divButton.setOnClickListener( view->{
-            operador = Double.parseDouble(display.getText().toString());
+            operator = Double.parseDouble(display.getText().toString());
             display.setText("0");
-            operacion = Operacion.DIVISION;
+            operation = Operacion.DIVISION;
         });
 
         multButton.setOnClickListener( view->{
-            operador = Double.parseDouble(display.getText().toString());
+            operator = Double.parseDouble(display.getText().toString());
             display.setText("0");
-            operacion = Operacion.MULTIPLICACION;
+            operation = Operacion.MULTIPLICACION;
         });
 
         clear.setOnClickListener( view->{
             display.setText("0");
+            operator = 0.0;
         });
 
         resolve.setOnClickListener( view ->{
             double resultado;
-            if(operacion == Operacion.SUMA) {
-                resultado = operador + Double.parseDouble(display.getText().toString());
-            } else if (operacion == Operacion.RESTA) {
-                resultado = operador - Double.parseDouble(display.getText().toString());
-            } else if (operacion == Operacion.DIVISION) {
-                resultado = operador / Double.parseDouble(display.getText().toString());
-            } else if (operacion == Operacion.MULTIPLICACION) {
-                resultado = operador * Double.parseDouble(display.getText().toString());
+            if(operation == Operacion.SUMA) {
+                resultado = operator + Double.parseDouble(display.getText().toString());
+            } else if (operation == Operacion.RESTA) {
+                resultado = operator - Double.parseDouble(display.getText().toString());
+            } else if (operation == Operacion.DIVISION) {
+                resultado = operator / Double.parseDouble(display.getText().toString());
+            } else if (operation == Operacion.MULTIPLICACION) {
+                resultado = operator * Double.parseDouble(display.getText().toString());
             }else{
                 resultado = 0;
             }
+            operator = Double.parseDouble(display.getText().toString());
             display.setText(String.valueOf(resultado));
+        });
+
+        disabler.setOnClickListener(view -> {
+            if(disabler.isChecked()){
+                options.setVisibility(View.VISIBLE);
+            }
+            else{
+                options.setVisibility(View.GONE);
+            }
+        });
+        options.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                if (i == R.id.hideDiv) {
+                    sumButton.setVisibility(View.VISIBLE);
+                    divButton.setVisibility(View.INVISIBLE);
+                    multButton.setVisibility(View.VISIBLE);
+                    restButton.setVisibility(View.VISIBLE);
+                } else if (i == R.id.hideMult) {
+                    sumButton.setVisibility(View.VISIBLE);
+                    divButton.setVisibility(View.VISIBLE);
+                    multButton.setVisibility(View.INVISIBLE);
+                    restButton.setVisibility(View.VISIBLE);
+                } else if (i == R.id.hideSum) {
+                    sumButton.setVisibility(View.INVISIBLE);
+                    divButton.setVisibility(View.VISIBLE);
+                    multButton.setVisibility(View.VISIBLE);
+                    restButton.setVisibility(View.VISIBLE);
+                } else if (i == R.id.hideRest) {
+                    sumButton.setVisibility(View.VISIBLE);
+                    divButton.setVisibility(View.VISIBLE);
+                    multButton.setVisibility(View.VISIBLE);
+                    restButton.setVisibility(View.INVISIBLE);
+                }
+            }
         });
     }
     @Override
@@ -83,6 +150,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else{
             display.setText(display.getText().toString()+((Button)view).getText());
         }
+    }
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("operator", operator);
+        outState.putSerializable("operation", operation);
+        outState.putSerializable("checked",disabler.isChecked());
     }
 
 }
