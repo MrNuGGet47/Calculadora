@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button multButton;
     private Button divButton;
     private Button pointButton;
+    private Button deleteButton;
     private CheckBox disabler;
     private RadioGroup options;
     private Double operator;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sumButton = findViewById(R.id.sumButton);
         clear = findViewById(R.id.clear);
         resolve = findViewById(R.id.resolve);
+        deleteButton = findViewById(R.id.deleteButton);
         restButton = findViewById(R.id.restButton);
         multButton = findViewById(R.id.multButton);
         divButton = findViewById(R.id.divButton);
@@ -84,7 +86,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             display.setText("0");
             operation = Operacion.MULTIPLICACION;
         });
-
+        deleteButton.setOnClickListener(view->{
+            display.setText(display.getText().toString().substring(0,display.getText().toString().length()));
+        });
         clear.setOnClickListener( view->{
             display.setText("0");
             operator = 0.0;

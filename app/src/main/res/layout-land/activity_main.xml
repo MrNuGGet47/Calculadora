@@ -216,14 +216,24 @@
 
     <Button
         android:id="@+id/clear"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="237dp"
+        android:layout_height="81dp"
         android:backgroundTint="#415a77"
         android:text="Clear"
         app:layout_constraintBottom_toTopOf="@+id/showOpt"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/tableLayout"
+        app:layout_constraintTop_toBottomOf="@+id/display" />
+
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="←"
+        app:layout_constraintBottom_toBottomOf="@+id/clear"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/clear"
         app:layout_constraintTop_toBottomOf="@+id/display" />
 
     <CheckBox
@@ -236,9 +246,9 @@
         android:textColor="#e0e1dd"
         android:textColorLink="#1b263b"
         app:layout_constraintBottom_toTopOf="@+id/disOptions"
-        app:layout_constraintEnd_toEndOf="@+id/clear"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/clear"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/tableLayout"
         app:layout_constraintTop_toBottomOf="@+id/clear" />
 
     <RadioGroup
