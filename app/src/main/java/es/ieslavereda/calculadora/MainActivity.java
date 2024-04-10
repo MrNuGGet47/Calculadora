@@ -10,9 +10,6 @@ import android.widget.CheckBox;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView display;
     private Button sumButton;
@@ -86,12 +83,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             display.setText("0");
             operation = Operacion.MULTIPLICACION;
         });
-        deleteButton.setOnClickListener(view->{
-            display.setText(display.getText().toString().substring(0,display.getText().toString().length()));
-        });
+
         clear.setOnClickListener( view->{
             display.setText("0");
             operator = 0.0;
+        });
+        deleteButton.setOnClickListener( view->{
+            display.setText(display.getText().toString().substring(0,display.getText().length()-1));
         });
 
         resolve.setOnClickListener( view ->{
